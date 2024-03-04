@@ -7,14 +7,14 @@ spring:
     username: postgres
     password: root
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-      jdbc:
-        lob.non-contextural-creation: true
-      properties:
-        hibernate:
-          show_sql: true
+      ddl-auto: update # define a estratégia de atualização do schema do banco de dados (update, create, create-drop, validate)
+    show-sql: true # exibe consultas SQL na console
+    properties:
+      hibernate:
+        format_sql: true # formata consultas SQL na console
+        show_sql: true
 
 
 
