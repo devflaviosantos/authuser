@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -54,7 +55,8 @@ public class UserController {
     }
     @PutMapping("/{userId}")
     public ResponseEntity<Object> UpdateUser(@PathVariable(value = "userId") UUID userId,
-                                             @RequestBody @JsonView(UserDto.UserView.UserPut.class) UserDto userDto){
+                                             @RequestBody @Validated(UserDto.UserView.UserPut.class)
+                                             @JsonView(UserDto.UserView.UserPut.class) UserDto userDto){
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (!userModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
@@ -74,7 +76,8 @@ public class UserController {
 
     @PutMapping("/{userId}/password")
     public ResponseEntity<Object> UpdatePassword(@PathVariable(value = "userId") UUID userId,
-                                                 @RequestBody @JsonView(UserDto.UserView.PasswordPut.class) UserDto userDto){
+                                                 @RequestBody @Validated(UserDto.UserView.PasswordPut.class)
+                                                 @JsonView(UserDto.UserView.PasswordPut.class) UserDto userDto){
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (!userModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
@@ -91,7 +94,8 @@ public class UserController {
 
     @PutMapping("/{userId}/images")
     public ResponseEntity<Object> UpdateImage(@PathVariable(value = "userId") UUID userId,
-                                              @RequestBody @JsonView(UserDto.UserView.ImagePut.class) UserDto userDto){
+                                              @RequestBody @Validated(UserDto.UserView.ImagePut.class)
+                                              @JsonView(UserDto.UserView.ImagePut.class) UserDto userDto){
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (!userModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found!");
