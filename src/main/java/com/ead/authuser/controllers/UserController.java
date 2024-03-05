@@ -3,8 +3,14 @@ package com.ead.authuser.controllers;
 import com.ead.authuser.dtos.UserDto;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
+import com.ead.authuser.specifications.SpecifcationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,9 +34,11 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserModel>> getAllUsers(){
+    public ResponseEntity<Page<UserModel>> getAllUsers(SpecifcationTemplate.UserSpec spec,
+                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<UserModel> userModelPage = userService.findAll(pageable, spec);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userService.findAll());
+                .body(userModelPage);
     }
 
     @GetMapping("/{userId}")
