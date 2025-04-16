@@ -1,9 +1,11 @@
 package com.ead.authuser.dtos;
 
+import com.ead.authuser.validation.UserNameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -22,7 +24,8 @@ public class UserDTO {
     private UUID userId;
 
     @NotBlank(groups = UserView.RegistrationPost.class)
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 50, groups = UserView.RegistrationPost.class)
+    @UserNameConstraint(groups = UserView.RegistrationPost.class)
     @JsonView(UserView.RegistrationPost.class)
     private String userName;
 
@@ -30,16 +33,17 @@ public class UserDTO {
     private String fullName;
 
     @NotBlank(groups = UserView.RegistrationPost.class)
+    @Email(groups = UserView.RegistrationPost.class)
     @JsonView(UserView.RegistrationPost.class)
     private String email;
 
     @NotBlank(groups = {UserView.RegistrationPost.class, UserView.PasswordPut.class})
-    @Size(min = 6, max = 20)
+    @Size(min = 6, max = 20, groups = {UserView.PasswordPut.class,UserView.RegistrationPost.class})
     @JsonView({UserView.PasswordPut.class,UserView.RegistrationPost.class})
     private String password;
 
     @NotBlank(groups = UserView.PasswordPut.class)
-    @Size(min = 6, max = 270)
+    @Size(min = 6, max = 270, groups = UserView.PasswordPut.class)
     @JsonView(UserView.PasswordPut.class)
     private String oldPassword;
 
